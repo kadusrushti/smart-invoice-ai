@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SmartInvoice AI - Project Guide (Plain English)</title>
+<style>
+  @page { margin: 0; size: A4; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; color: #1e293b; background: #e2e8f0; line-height: 1.7; }
+
+  .page {
+    width: 210mm; min-height: 297mm; margin: 0 auto; background: white;
+    padding: 18mm 16mm; position: relative; page-break-after: always;
+  }
+  .page:last-child { page-break-after: auto; }
+
+  /* ---- Cover ---- */
+  .cover { display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
+  .cover .logo { width: 90px; height: 90px; border-radius: 22px; background: linear-gradient(135deg, #06b6d4, #2563eb); display: flex; align-items: center; justify-content: center; margin-bottom: 28px; box-shadow: 0 8px 30px rgba(6,182,212,0.3); }
+  .cover .logo svg { width: 44px; height: 44px; }
+  .cover h1 { font-size: 42px; font-weight: 800; color: #0f172a; letter-spacing: -1.5px; margin-bottom: 10px; }
+  .cover h1 span { color: #06b6d4; }
+  .cover .tagline { font-size: 17px; color: #64748b; margin-bottom: 12px; }
+  .cover .subtitle { font-size: 14px; color: #94a3b8; margin-bottom: 40px; max-width: 500px; }
+  .cover .meta-box { border: 1px solid #e2e8f0; border-radius: 14px; padding: 28px 36px; max-width: 440px; text-align: left; box-shadow: 0 4px 20px rgba(0,0,0,0.05); }
+  .cover .meta-box .row { display: flex; justify-content: space-between; padding: 7px 0; font-size: 14px; border-bottom: 1px solid #f1f5f9; }
+  .cover .meta-box .row:last-child { border-bottom: none; }
+  .cover .meta-box .row .k { color: #94a3b8; font-weight: 600; }
+  .cover .meta-box .row .v { color: #0f172a; font-weight: 600; }
+  .cover .badges { display: flex; gap: 10px; margin-top: 36px; flex-wrap: wrap; justify-content: center; }
+  .cover .badge { padding: 7px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .cover .badge.b1 { background: #dbeafe; color: #2563eb; }
+  .cover .badge.b2 { background: #e0e7ff; color: #4f46e5; }
+  .cover .badge.b3 { background: #d1fae5; color: #059669; }
+  .cover .badge.b4 { background: #fef3c7; color: #d97706; }
+  .cover .badge.b5 { background: #cffafe; color: #0891b2; }
+
+  /* ---- Typography ---- */
+  h2 { font-size: 24px; font-weight: 800; color: #0f172a; margin-bottom: 18px; padding-bottom: 10px; border-bottom: 3px solid #06b6d4; }
+  h3 { font-size: 17px; font-weight: 700; color: #1e293b; margin-top: 22px; margin-bottom: 10px; }
+  h4 { font-size: 14px; font-weight: 700; color: #0e7490; margin-top: 16px; margin-bottom: 6px; }
+  p { font-size: 14px; color: #334155; margin-bottom: 12px; text-align: justify; }
+  ul, ol { margin-left: 20px; margin-bottom: 14px; }
+  li { font-size: 14px; color: #334155; margin-bottom: 6px; }
+  strong { color: #0f172a; }
+
+  /* ---- Cards ---- */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 16px 0; }
+  .card { border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; }
+  .card .card-title { font-size: 14px; font-weight: 700; color: #06b6d4; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+  .card .card-title svg { width: 18px; height: 18px; }
+  .card .card-desc { font-size: 13px; color: #64748b; line-height: 1.6; }
+
+  /* ---- Table ---- */
+  table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+  th { background: #0f172a; color: white; font-size: 12px; font-weight: 600; padding: 10px 12px; text-align: left; }
+  td { font-size: 13px; padding: 9px 12px; border-bottom: 1px solid #e2e8f0; }
+  tr:nth-child(even) td { background: #f8fafc; }
+
+  /* ---- Flow ---- */
+  .flow { display: flex; flex-direction: column; gap: 0; margin: 18px 0; }
+  .flow-step { display: flex; align-items: flex-start; gap: 14px; position: relative; padding-bottom: 4px; }
+  .flow-step .num { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #06b6d4, #2563eb); color: white; font-size: 15px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; z-index: 2; }
+  .flow-step .content { flex: 1; border: 1px solid #e2e8f0; border-radius: 12px; padding: 12px 16px; }
+  .flow-step .content .title { font-size: 14px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+  .flow-step .content .desc { font-size: 13px; color: #64748b; line-height: 1.6; }
+  .flow-step:not(:last-child)::after { content: ''; position: absolute; left: 17px; top: 36px; bottom: 0; width: 2px; background: #cbd5e1; z-index: 1; }
+
+  /* ---- Highlight Box ---- */
+  .highlight-box { background: #f0fdfa; border-left: 4px solid #06b6d4; padding: 14px 18px; border-radius: 0 10px 10px 0; margin: 14px 0; }
+  .highlight-box .hb-title { font-size: 14px; font-weight: 700; color: #0e7490; margin-bottom: 6px; }
+  .highlight-box p { font-size: 13px; color: #334155; margin: 0; }
+  .highlight-box.amber { background: #fffbeb; border-left-color: #f59e0b; }
+  .highlight-box.amber .hb-title { color: #b45309; }
+  .highlight-box.rose { background: #fff1f2; border-left-color: #f43f5e; }
+  .highlight-box.rose .hb-title { color: #be123c; }
+  .highlight-box.blue { background: #eff6ff; border-left-color: #2563eb; }
+  .highlight-box.blue .hb-title { color: #1d4ed8; }
+
+  /* ---- Stats ---- */
+  .stats { display: flex; gap: 14px; margin: 18px 0; }
+  .stat { flex: 1; text-align: center; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px; }
+  .stat .num { font-size: 32px; font-weight: 800; color: #06b6d4; }
+  .stat .label { font-size: 12px; color: #64748b; margin-top: 4px; }
+
+  /* ---- Q&A ---- */
+  .qa { margin: 14px 0; }
+  .qa .q { font-size: 15px; font-weight: 700; color: #06b6d4; margin-bottom: 6px; }
+  .qa .a { font-size: 13px; color: #334155; margin-bottom: 14px; padding-left: 14px; border-left: 3px solid #e2e8f0; line-height: 1.7; }
+
+  /* ---- Two Column ---- */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+
+  /* ---- Architecture ---- */
+  .arch-box { border: 2px solid #06b6d4; border-radius: 14px; padding: 18px; text-align: center; }
+  .arch-box .arch-title { font-size: 15px; font-weight: 700; color: #0f172a; margin-bottom: 4px; }
+  .arch-box .arch-sub { font-size: 12px; color: #64748b; }
+  .arch-arrow { text-align: center; font-size: 24px; color: #06b6d4; margin: 6px 0; }
+  .arch-row { display: flex; gap: 14px; margin: 8px 0; }
+  .arch-col { flex: 1; }
+  .arch-small { border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; text-align: center; margin-bottom: 8px; background: #f8fafc; }
+  .arch-small .t { font-size: 13px; font-weight: 600; color: #1e293b; }
+  .arch-small .d { font-size: 11px; color: #94a3b8; margin-top: 2px; }
+
+  .footer { position: absolute; bottom: 8mm; left: 16mm; right: 16mm; text-align: center; font-size: 11px; color: #94a3b8; border-top: 1px solid #e2e8f0; padding-top: 8px; }
+  .page-num { position: absolute; bottom: 4mm; right: 16mm; font-size: 11px; color: #94a3b8; }
+
+  .section-num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; border-radius: 8px; background: #06b6d4; color: white; font-size: 16px; font-weight: 800; margin-right: 10px; vertical-align: middle; }
+
+  .tag-list { display: flex; flex-wrap: wrap; gap: 7px; margin: 10px 0; }
+  .tag { padding: 4px 12px; border-radius: 8px; font-size: 12px; font-weight: 600; background: #f1f5f9; color: #475569; }
+
+  .summary-box { margin-top: 24px; text-align: center; padding: 28px; border: 1px solid #e2e8f0; border-radius: 14px; background: linear-gradient(135deg, #f0fdfa, #eff6ff); }
+  .summary-box .title { font-size: 22px; font-weight: 800; color: #0f172a; margin-bottom: 8px; }
+  .summary-box .sub { font-size: 15px; color: #64748b; margin-bottom: 6px; }
+  .summary-box .tech { font-size: 13px; color: #94a3b8; }
+</style>
+</head>
+<body>
+
+<!-- ============ PAGE 1: COVER ============ -->
+<div class="page cover">
+  <div class="logo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+      <polyline points="14 2 14 8 20 8"/>
+      <line x1="8" y1="13" x2="16" y2="13"/>
+      <line x1="8" y1="17" x2="16" y2="17"/>
+      <line x1="8" y1="9" x2="10" y2="9"/>
+    </svg>
+  </div>
+  <h1>SmartInvoice<span> AI</span></h1>
+  <div class="tagline">Intelligent Invoice &amp; Receipt Processing System</div>
+  <div class="subtitle">An automatic data extraction tool built specifically for Indian GST invoices and receipts. Upload a document, and the app reads all the information for you.</div>
+
+  <div class="meta-box">
+    <div class="row"><span class="k">Project Type</span><span class="v">Full-Stack Web Application</span></div>
+    <div class="row"><span class="k">Built For</span><span class="v">Indian GST Invoices &amp; Receipts</span></div>
+    <div class="row"><span class="k">How It Works</span><span class="v">Upload &#8594; Scan &#8594; Review &#8594; Export</span></div>
+    <div class="row"><span class="k">Runs In</span><span class="v">Your Browser (no install needed)</span></div>
+    <div class="row"><span class="k">Privacy</span><span class="v">Documents never leave your device</span></div>
+    <div class="row"><span class="k">Export Options</span><span class="v">JSON, CSV, Excel</span></div>
+    <div class="row"><span class="k">Cost</span><span class="v">Completely free, no API keys</span></div>
+    <div class="row"><span class="k">Language</span><span class="v">Plain English Guide</span></div>
+  </div>
+
+  <div class="badges">
+    <span class="badge b1">React 18</span>
+    <span class="badge b2">TypeScript</span>
+    <span class="badge b3">Vite</span>
+    <span class="badge b4">Tesseract.js OCR</span>
+    <span class="badge b5">Tailwind CSS</span>
+  </div>
+</div>
+
+<!-- ============ PAGE 2: WHAT IS THIS PROJECT ============ -->
+<div class="page">
+  <h2><span class="section-num">1</span> What Is This Project?</h2>
+
+  <p>
+    <strong>SmartInvoice AI</strong> is a web application that automatically reads information from <strong>Indian GST
+    invoices and receipts</strong>. In simple terms: you have a paper invoice or a PDF invoice on your computer. You upload
+    it to this app, and the app reads all the text from it &mdash; vendor name, GST number, amounts, tax breakdown, line
+    items, everything &mdash; and displays it in a clean, editable form. No manual data entry needed.
+  </p>
+
+  <div class="highlight-box">
+    <div class="hb-title">What Problem Does This Solve?</div>
+    <p>
+      Every day, Indian companies receive thousands of invoices. The accounts team has to manually type in every detail
+      from each invoice &mdash; vendor name, GST number, amounts, tax amounts, line items, and more. This process is slow,
+      prone to typing errors, and wastes a lot of time. SmartInvoice AI does all of this automatically in seconds.
+    </p>
+  </div>
+
+  <h3>How It Works (Simple Steps)</h3>
+  <div class="flow">
+    <div class="flow-step">
+      <div class="num">1</div>
+      <div class="content">
+        <div class="title">Upload Your Document</div>
+        <div class="desc">You upload a PDF, PNG, or JPG file. You can drag-and-drop or click to browse. You can also pick from 4 ready-made sample invoices.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="num">2</div>
+      <div class="content">
+        <div class="title">The App Reads the Text</div>
+        <div class="desc">A built-in scanning engine looks at the document's pixels and recognizes the text. For PDFs, each page is scanned separately for better accuracy.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="num">3</div>
+      <div class="content">
+        <div class="title">Smart Information Extraction</div>
+        <div class="desc">The recognized text is analyzed. The app finds specific pieces of information like GST numbers, dates, amounts, and line items using pattern matching.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="num">4</div>
+      <div class="content">
+        <div class="title">Review and Edit</div>
+        <div class="desc">All extracted information appears in an editable form. Every field has a confidence score showing how sure the app is. Low-confidence fields are highlighted so you know to double-check them.</div>
+      </div>
+    </div>
+    <div class="flow-step">
+      <div class="num">5</div>
+      <div class="content">
+        <div class="title">Export Your Data</div>
+        <div class="desc">With one click, you can download everything as a JSON file, a CSV file, or an Excel spreadsheet with multiple sheets. You can also copy the data to your clipboard.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Some Important Numbers</h3>
+  <div class="stats">
+    <div class="stat"><div class="num">30+</div><div class="label">Fields Extracted</div></div>
+    <div class="stat"><div class="num">4</div><div class="label">Sample Invoices</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">Export Formats</div></div>
+    <div class="stat"><div class="num">3</div><div class="label">Detail Sections</div></div>
+  </div>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 2</div>
+</div>
+
+<!-- ============ PAGE 3: FEATURES ============ -->
+<div class="page">
+  <h2><span class="section-num">2</span> What Can You Do With It? (Features)</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><line x1="7" y1="12" x2="17" y2="12"/></svg>
+        Real Scanning (OCR)
+      </div>
+      <div class="card-desc">The app genuinely reads pixels from your document using a scanning engine that runs inside your browser. No fake or hardcoded data &mdash; it actually reads what's on the page.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Multi-Page PDF Support
+      </div>
+      <div class="card-desc">Whether your PDF has 1 page or 10 pages, the app scans each page separately. Each page is rendered at double resolution for better reading accuracy.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+        Indian GST Fields
+      </div>
+      <div class="card-desc">Specifically handles Indian tax fields: GSTIN, PAN, CIN, CGST, SGST, IGST, HSN codes, Place of Supply, and State Code. Built for Indian invoices, not generic ones.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Both Supplier &amp; Customer Details
+      </div>
+      <div class="card-desc">Not just the vendor &mdash; the app also extracts the customer/recipient's name, address, and GST number. Both parties' details are captured.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+        Line Items with HSN Codes
+      </div>
+      <div class="card-desc">Each line item is extracted with its description, HSN code, quantity, unit (NOS, KG, CUM), rate, discount, and line total. Perfect for inventory and tax filing.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+        3 Detail Sections for Industrial Use
+      </div>
+      <div class="card-desc">For industrial invoices: Invoice &amp; Order Details, Delivery &amp; Transport (vehicle, driver, e-way bill), and Production Details (cement type, mix design, slump).</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Confidence Scores
+      </div>
+      <div class="card-desc">Every field has a confidence percentage. Green means 90%+ confident, amber means 75-89%, red means less than 75%. You instantly know which fields to verify.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        Multi-Format Export
+      </div>
+      <div class="card-desc">One click to download as JSON, CSV, or Excel. The Excel file has multiple sheets: Summary, Line Items, and separate sheets for each detail section. Column widths are auto-sized.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6"/><path d="M9 21H3v-6"/><path d="M21 3l-7 7"/><path d="M3 21l7-7"/></svg>
+        Live Document Preview
+      </div>
+      <div class="card-desc">The left side shows your original document (with zoom controls). The right side shows the extracted data. You can compare both side by side to verify accuracy.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        Everything Is Editable
+      </div>
+      <div class="card-desc">Every field can be edited. If you change the quantity or rate on a line item, the line total recalculates automatically. You're always in control.</div>
+    </div>
+  </div>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 3</div>
+</div>
+
+<!-- ============ PAGE 4: TECHNOLOGY ============ -->
+<div class="page">
+  <h2><span class="section-num">3</span> What Technologies Were Used?</h2>
+
+  <p>
+    This project uses different technologies on the frontend (what runs in your browser) and an optional backend (a server
+    that can do the same work if needed). Here's what each one does, explained in plain English.
+  </p>
+
+  <h3>Frontend (What Runs In Your Browser)</h3>
+  <table>
+    <tr><th>Technology</th><th>What It Does</th></tr>
+    <tr><td><strong>React</strong></td><td>Builds the user interface &mdash; the buttons, forms, tables, and pages you see and interact with. Version 18.</td></tr>
+    <tr><td><strong>TypeScript</strong></td><td>Adds safety to the code by catching errors before the app runs. Think of it as a spell-checker for code.</td></tr>
+    <tr><td><strong>Vite</strong></td><td>The tool that builds the app and runs the development server. It's very fast &mdash; changes appear instantly.</td></tr>
+    <tr><td><strong>Tailwind CSS</strong></td><td>Handles all the styling &mdash; colors, spacing, responsive layout, and the dark theme. No custom CSS files needed.</td></tr>
+    <tr><td><strong>Lucide React</strong></td><td>Provides clean, professional icons for buttons &mdash; upload, scan, download, zoom, etc.</td></tr>
+    <tr><td><strong>Tesseract.js</strong></td><td>The core scanning engine. It reads text from images and PDF pages right inside your browser using a background worker thread.</td></tr>
+    <tr><td><strong>PDF.js</strong></td><td>Reads PDF files and converts each page into an image on a canvas, so the scanning engine can read it.</td></tr>
+    <tr><td><strong>SheetJS (xlsx)</strong></td><td>Creates Excel files with multiple sheets, proper column widths, and formatted data.</td></tr>
+    <tr><td><strong>Supabase</strong></td><td>Available for saving data permanently (like extraction history) and user accounts, if needed in the future.</td></tr>
+  </table>
+
+  <h3>Optional Backend (Python Server)</h3>
+  <table>
+    <tr><th>Technology</th><th>What It Does</th></tr>
+    <tr><td><strong>FastAPI</strong></td><td>A Python web server that provides the same scanning service over the internet, for cases where you want server-side processing.</td></tr>
+    <tr><td><strong>pytesseract</strong></td><td>Python's version of the scanning engine &mdash; does the same text recognition but on the server instead of in the browser.</td></tr>
+    <tr><td><strong>pdf2image</strong></td><td>Converts PDF pages into images on the server side, similar to what PDF.js does in the browser.</td></tr>
+    <tr><td><strong>Pillow (PIL)</strong></td><td>Opens and processes image files on the server.</td></tr>
+    <tr><td><strong>EasyOCR</strong></td><td>An alternative scanning engine that uses neural networks &mdash; more accurate but slower. Available as an option.</td></tr>
+    <tr><td><strong>Pydantic</strong></td><td>Validates the data that comes in and goes out of the server, making sure everything is in the right format.</td></tr>
+  </table>
+
+  <h3>Development Tools</h3>
+  <table>
+    <tr><th>Tool</th><th>What It Does</th></tr>
+    <tr><td>ESLint</td><td>Checks code quality and catches common mistakes, like a grammar checker for code.</td></tr>
+    <tr><td>PostCSS + Autoprefixer</td><td>Processes CSS and adds browser compatibility automatically.</td></tr>
+    <tr><td>npm</td><td>Manages all the external packages and dependencies the project needs.</td></tr>
+  </table>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 4</div>
+</div>
+
+<!-- ============ PAGE 5: ARCHITECTURE ============ -->
+<div class="page">
+  <h2><span class="section-num">4</span> How Is The System Built?</h2>
+
+  <p>
+    This app is built with a <strong>browser-first approach</strong>. That means all the scanning and text recognition happens
+    right inside your browser &mdash; no server needed. The Python backend is optional and only used if you want to process
+    documents on a server instead (for example, for batch processing or higher accuracy).
+  </p>
+
+  <div style="margin: 18px 0;">
+    <div class="arch-box">
+      <div class="arch-title">User Interface (What You See)</div>
+      <div class="arch-sub">Header bar, Upload area, Sample picker, Document preview, Data editor, Line items table, Detail panels, Export toolbar</div>
+    </div>
+    <div class="arch-arrow">&#8595;</div>
+    <div class="arch-box">
+      <div class="arch-title">Main App Logic (The Brain)</div>
+      <div class="arch-sub">Manages 3 phases: Upload &#8594; Processing &#8594; Review</div>
+    </div>
+    <div class="arch-arrow">&#8595;</div>
+    <div class="arch-row">
+      <div class="arch-col">
+        <div class="arch-small">
+          <div class="t">Scanning Engine</div>
+          <div class="d">Reads text from documents<br/>Right in your browser</div>
+        </div>
+      </div>
+      <div class="arch-col">
+        <div class="arch-small">
+          <div class="t">Information Extractor</div>
+          <div class="d">Finds specific fields from text<br/>Indian GST format support</div>
+        </div>
+      </div>
+      <div class="arch-col">
+        <div class="arch-small">
+          <div class="t">Export Engine</div>
+          <div class="d">Creates JSON / CSV / Excel files<br/>Multi-sheet Excel support</div>
+        </div>
+      </div>
+    </div>
+    <div class="arch-arrow">&#8595;</div>
+    <div class="arch-box" style="border-color: #94a3b8; border-style: dashed;">
+      <div class="arch-title">Optional: Python Server</div>
+      <div class="arch-sub">Same scanning and extraction, but done on a server instead of in the browser</div>
+    </div>
+  </div>
+
+  <h3>Why Scan In The Browser? (Why Not A Server?)</h3>
+  <ul>
+    <li><strong>Zero infrastructure cost</strong> &mdash; no server to maintain, no cloud bills to pay</li>
+    <li><strong>Complete privacy</strong> &mdash; your document never leaves your computer</li>
+    <li><strong>Instant processing</strong> &mdash; no waiting for data to travel to a server and back</li>
+    <li><strong>Works offline</strong> &mdash; once the app loads, you don't even need an internet connection</li>
+  </ul>
+
+  <div class="highlight-box">
+    <div class="hb-title">How Does The App Manage Its State?</div>
+    <p>
+      The app has 3 phases: <strong>upload</strong> (the file upload screen), <strong>processing</strong> (scanning is
+      running), and <strong>review</strong> (data is extracted and ready to edit). The currently active document and all its
+      extracted data are stored in one central place. Every part of the screen receives its data from this central store
+      and reports any changes back to it. This keeps everything organized and consistent.
+    </p>
+  </div>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 5</div>
+</div>
+
+<!-- ============ PAGE 6: SCANNING ENGINE ============ -->
+<div class="page">
+  <h2><span class="section-num">5</span> How Does The Scanning Work?</h2>
+
+  <h3>What Is The Scanning Engine?</h3>
+  <p>
+    The scanning engine (called Tesseract.js) is an open-source tool that reads text from images. It runs inside your
+    browser in a <strong>background thread</strong>, which means the app stays responsive and smooth while scanning is
+    happening &mdash; you can still interact with the page. The first time you use it, it downloads a small English language
+    pack, and after that it can read text from any image or PDF page.
+  </p>
+
+  <h3>How Are PDFs Processed?</h3>
+  <ol>
+    <li>The PDF file is read into memory</li>
+    <li>A PDF reader tool loads the document and counts the pages</li>
+    <li>Each page is rendered onto a canvas at <strong>double resolution</strong> (for better accuracy)</li>
+    <li>The canvas image is passed to the scanning engine</li>
+    <li>Text from each page is recognized separately</li>
+    <li>All text from all pages is combined together</li>
+    <li>Progress is shown on screen in real-time</li>
+  </ol>
+
+  <h3>How Are Images Processed?</h3>
+  <ol>
+    <li>The image is loaded into the page</li>
+    <li>It's drawn onto a canvas (limited to 2000 pixels on the longest side, to save memory)</li>
+    <li>The canvas is passed to the scanning engine</li>
+    <li>The recognized text is returned</li>
+  </ol>
+
+  <div class="highlight-box amber">
+    <div class="hb-title">Why Double Resolution?</div>
+    <p>
+      Scanning accuracy depends heavily on image resolution. At normal size, the text in a PDF is too small for the scanning
+      engine to read reliably. By doubling the resolution, we give the engine twice as many pixels to work with, which
+      dramatically improves how accurately it recognizes each character.
+    </p>
+  </div>
+
+  <h3>What About The Python Server Option?</h3>
+  <p>
+    The Python server follows the same logic but uses Python-based tools instead. It can use the same scanning engine via a
+    Python wrapper, or it can use an alternative neural-network-based engine (EasyOCR) that is more accurate but slower.
+    There's also a placeholder for connecting cloud-based vision AI models (like GPT-4V or Gemini Vision) in the future,
+    which would offer even higher accuracy for complex or handwritten documents.
+  </p>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 6</div>
+</div>
+
+<!-- ============ PAGE 7: INFORMATION EXTRACTION ============ -->
+<div class="page">
+  <h2><span class="section-num">6</span> How Does Information Get Extracted?</h2>
+
+  <p>
+    Once the scanning engine produces raw text, the app needs to find specific pieces of information in that text. It does
+    this using a <strong>pattern-matching system</strong>. For each field (like GST number, invoice number, amounts), there
+    are multiple search patterns tried in order of priority. The first one that matches wins, and the confidence score
+    decreases slightly for each pattern that had to be tried before finding a match.
+  </p>
+
+  <h3>What Fields Get Extracted?</h3>
+  <table>
+    <tr><th>Field</th><th>What It Looks For</th><th>Typical Confidence</th></tr>
+    <tr><td>GST Number</td><td>"GSTIN: 27AABCF8078M1Z8" or any 15-character GST pattern</td><td>93%</td></tr>
+    <tr><td>PAN</td><td>"PAN: AAAAA0000A" or any 10-character PAN pattern</td><td>88%</td></tr>
+    <tr><td>Invoice Number</td><td>"Invoice No: XXX", "INV-XXX", or "#XXX"</td><td>92%</td></tr>
+    <tr><td>Invoice Date</td><td>"Invoice Date: 15/03/2024" or "Date: 2024-03-15"</td><td>90%</td></tr>
+    <tr><td>Due Date</td><td>"Due Date: 30/03/2024" or "Payment Due: ..."</td><td>88%</td></tr>
+    <tr><td>CGST / SGST / IGST</td><td>"CGST: 4,500" or "Central Tax: 4500"</td><td>90%</td></tr>
+    <tr><td>Grand Total</td><td>"Grand Total: 59,000" or "Amount Payable: ..."</td><td>90%</td></tr>
+    <tr><td>Place of Supply</td><td>"Place of Supply: Haryana (06)"</td><td>85%</td></tr>
+    <tr><td>Vendor Name</td><td>First valid line in the document (skips keywords like "Invoice", "Date")</td><td>85%</td></tr>
+    <tr><td>Line Items</td><td>Rows between the items table header and the totals section</td><td>85%</td></tr>
+  </table>
+
+  <div class="highlight-box">
+    <div class="hb-title">Smart Auto-Calculations</div>
+    <p>
+      If some values are missing, the app calculates them automatically:
+      <strong>Subtotal:</strong> if empty, adds up all line item totals.
+      <strong>Total Tax:</strong> if empty, adds CGST + SGST + IGST.
+      <strong>Grand Total:</strong> if empty, adds Subtotal + Total Tax.
+      <strong>Line Total:</strong> Quantity &times; Unit Price &times; (1 &minus; Discount%).
+    </p>
+  </div>
+
+  <h3>Date Handling (Indian Format)</h3>
+  <p>
+    Indian invoices typically use the <strong>DD/MM/YYYY</strong> date format. The app detects multiple date formats and
+    converts them all to a standard format (YYYY-MM-DD): DD/MM/YYYY, DD-MM-YYYY, YYYY-MM-DD, YYYY/MM/DD, and even text dates
+    like "March 15, 2024". It validates that the day is 31 or less and the month is 12 or less to avoid mixing up days and
+    months.
+  </p>
+
+  <h3>How Are Line Items Found?</h3>
+  <p>
+    The app looks for a table header row containing words like "Description" along with "Qty", "HSN", or "Rate". Once it
+    finds the header, it reads each row below it until it hits a row containing words like "Total", "Tax", or "Subtotal".
+    Each row is parsed to extract the description, HSN code, quantity, unit, rate, and line total.
+  </p>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 7</div>
+</div>
+
+<!-- ============ PAGE 8: SCREENS & COMPONENTS ============ -->
+<div class="page">
+  <h2><span class="section-num">7</span> What Screens Does The App Have?</h2>
+
+  <p>The app is made up of 9 distinct parts, each responsible for one area of the screen.</p>
+
+  <h3>1. Main Controller (The Brain)</h3>
+  <p>
+    This is the root of the app. It manages the 3-phase flow (upload &#8594; processing &#8594; review), coordinates the
+    scanning process, holds the active document's data, and decides which screen to show based on the current phase.
+  </p>
+
+  <h3>2. Top Navigation Bar</h3>
+  <p>A sticky bar at the top with the app logo, a "Scanning Engine Online" status badge, and a link to the source code. Clicking the logo resets the app.</p>
+
+  <h3>3. Upload Area</h3>
+  <p>
+    A large drag-and-drop zone where you drop your files. You can also click to browse and select files. Accepts PDF, PNG,
+    and JPG formats. While processing, a loading spinner appears.
+  </p>
+
+  <h3>4. Sample Invoice Picker</h3>
+  <p>Four sample invoice cards showing the vendor name, type, and total amount. Click any card to load that sample and see the app in action immediately.</p>
+
+  <h3>5. Document Preview (Left Side)</h3>
+  <p>
+    Shows your original document with zoom controls (50% to 200%). For uploaded PDFs, the first page is rendered as an image.
+    For uploaded images, they display directly. For sample invoices, a <strong>realistic Indian GST Tax Invoice</strong> is
+    rendered on white paper &mdash; complete with supplier and recipient details, GST and PAN numbers, a line items table
+    with HSN codes, and a full tax breakdown showing CGST/SGST or IGST.
+  </p>
+
+  <h3>6. Data Editor (Right Side)</h3>
+  <p>
+    Over 30 editable fields in a responsive grid. Currency fields show a &#8377; symbol. Low-confidence fields (below 75%)
+    get an amber border with a "please verify" warning. Each field has a hover-to-copy button for quick copying.
+  </p>
+  <div class="tag-list">
+    <span class="tag">Vendor Name</span><span class="tag">Vendor Address</span><span class="tag">CIN</span>
+    <span class="tag">Invoice Number</span><span class="tag">Invoice Date</span><span class="tag">Due Date</span>
+    <span class="tag">GST Number</span><span class="tag">PAN</span><span class="tag">Recipient Name</span>
+    <span class="tag">Recipient Address</span><span class="tag">Recipient GST</span><span class="tag">Place of Supply</span>
+    <span class="tag">State Code</span><span class="tag">PO Number</span><span class="tag">PO Date</span>
+    <span class="tag">Order Number</span><span class="tag">Order Quantity</span><span class="tag">Invoice Reference</span>
+    <span class="tag">Reverse Charge</span><span class="tag">Subtotal</span><span class="tag">CGST</span>
+    <span class="tag">SGST</span><span class="tag">IGST</span><span class="tag">Total Tax</span>
+    <span class="tag">TCS</span><span class="tag">Round Off</span><span class="tag">Grand Total</span>
+    <span class="tag">Tax in Words</span><span class="tag">Total in Words</span><span class="tag">Currency</span>
+  </div>
+
+  <h3>7. Line Items Table</h3>
+  <p>
+    An editable table with columns: Description, HSN Code, Quantity, Unit (dropdown), Rate (&#8377;), Discount %, Line Total
+    (&#8377;), and Confidence. Change the quantity or rate, and the line total recalculates automatically. You can add and
+    delete rows.
+  </p>
+
+  <h3>8. Detail Sections (Expandable Panels)</h3>
+  <p>Three collapsible sections for industrial invoices:</p>
+  <ul>
+    <li><strong>Invoice &amp; Order Details:</strong> Invoice Reference, PO Number/Date, Order Number/Quantity, DC Number/Date</li>
+    <li><strong>Delivery &amp; Transport:</strong> Vehicle Number, Transporter, Driver Name/Mobile, LR Number/Date, Pump Details, E-Way Bill Number</li>
+    <li><strong>Production Details:</strong> Material Description, Cement Type, Mix Design, Slump, Water Added, W/C Ratio, Admixture</li>
+  </ul>
+
+  <h3>9. Export Toolbar &amp; Confidence Badge</h3>
+  <p>
+    The export toolbar shows the overall confidence percentage, a re-scan button, copy-to-clipboard, and export buttons for
+    JSON, CSV, and Excel. The confidence badge is a color-coded indicator: green (90%+), amber (75-89%), red (below 75%).
+  </p>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 8</div>
+</div>
+
+<!-- ============ PAGE 9: EXPORT & SAMPLES ============ -->
+<div class="page">
+  <h2><span class="section-num">8</span> Export Options &amp; Sample Invoices</h2>
+
+  <h3>How Does Export Work?</h3>
+  <p>You can export the extracted data in 3 formats:</p>
+  <ul>
+    <li><strong>JSON:</strong> A structured data file containing all fields, line items, and detail sections. Ideal for programmers or importing into other systems.</li>
+    <li><strong>CSV:</strong> A flat spreadsheet file with field-value pairs, then the line items table, then detail sections. Opens in any spreadsheet program.</li>
+    <li><strong>Excel (XLSX):</strong> A multi-sheet workbook &mdash; one sheet for the summary (all fields), one for line items, and separate sheets for each detail section. Column widths are automatically sized.</li>
+  </ul>
+  <p>There's also a <strong>Copy JSON</strong> button that copies all the data to your clipboard instantly.</p>
+
+  <h3>Sample Invoices (4 Indian GST Examples)</h3>
+  <table>
+    <tr><th>#</th><th>Vendor</th><th>Tax Type</th><th>Total</th><th>What It Demonstrates</th></tr>
+    <tr><td>1</td><td>Reliance Digital Retail Ltd.</td><td>CGST + SGST</td><td>&#8377;59,000</td><td>Electronics retailer, intra-state sale (within Haryana)</td></tr>
+    <tr><td>2</td><td>Tata Motors Service Center</td><td>CGST + SGST</td><td>&#8377;23,600</td><td>Automotive service, intra-state (within Maharashtra)</td></tr>
+    <tr><td>3</td><td>Flipkart Internet Pvt Ltd</td><td>IGST only</td><td>&#8377;12,950</td><td>E-commerce, inter-state sale (Karnataka to Delhi)</td></tr>
+    <tr><td>4</td><td>UltraTech Cement (RMC)</td><td>CGST + SGST</td><td>&#8377;96,430</td><td>Industrial invoice with full transport and production details</td></tr>
+  </table>
+
+  <div class="highlight-box blue">
+    <div class="hb-title">What Do These 4 Samples Cover?</div>
+    <p>
+      <strong>Intra-state sales</strong> (within the same state) use CGST + SGST &mdash; demonstrated by Samples 1, 2, and 4.
+      <strong>Inter-state sales</strong> (between different states) use IGST &mdash; demonstrated by Sample 3 (Flipkart,
+      shipping from Karnataka to Delhi).
+      <strong>Industrial invoices</strong> (Sample 4) show the full power of the app with transport details (vehicle number,
+      driver name, e-way bill) and production details (cement type, mix design, slump, water-cement ratio).
+    </p>
+  </div>
+
+  <h3>What Information Gets Extracted From Each Invoice?</h3>
+  <p>Each sample invoice contains the following types of information that the app extracts:</p>
+  <ul>
+    <li><strong>Supplier details:</strong> Name, address, GST number, PAN, CIN</li>
+    <li><strong>Customer details:</strong> Name, address, GST number</li>
+    <li><strong>Invoice details:</strong> Number, date, due date, reference, reverse charge</li>
+    <li><strong>Order details:</strong> PO number, PO date, order number, order quantity</li>
+    <li><strong>Tax details:</strong> Place of supply, state code, subtotal, CGST, SGST, IGST, total tax, TCS, round off, grand total</li>
+    <li><strong>Amount in words:</strong> Both tax amount and total amount written out in words</li>
+    <li><strong>Line items:</strong> Description, HSN code, quantity, unit, unit price, discount, line total</li>
+    <li><strong>Detail sections (industrial):</strong> Vehicle, driver, e-way bill, cement type, mix design, and more</li>
+  </ul>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 9</div>
+</div>
+
+<!-- ============ PAGE 10: FILE STRUCTURE ============ -->
+<div class="page">
+  <h2><span class="section-num">9</span> How Are The Files Organized?</h2>
+
+  <p>Here's a map of all the files in the project and what each one does, explained in plain English.</p>
+
+  <table>
+    <tr><th>File</th><th>What It Does</th></tr>
+    <tr><td><strong>index.html</strong></td><td>The starting point &mdash; the HTML page that loads the app in the browser.</td></tr>
+    <tr><td><strong>package.json</strong></td><td>A list of all external packages the project needs, plus the commands to run it.</td></tr>
+    <tr><td><strong>vite.config.ts</strong></td><td>Settings for the build tool &mdash; includes a shortcut so files can be imported using "@/" instead of long paths.</td></tr>
+    <tr><td><strong>tailwind.config.js</strong></td><td>Settings for the styling system &mdash; colors, breakpoints, and theme.</td></tr>
+    <tr><td><strong>src/main.tsx</strong></td><td>The entry point that renders the main app onto the page.</td></tr>
+    <tr><td><strong>src/App.tsx</strong></td><td>The main app &mdash; manages the 3 phases (upload, processing, review) and coordinates everything.</td></tr>
+    <tr><td><strong>src/index.css</strong></td><td>Global styles and styling system setup.</td></tr>
+    <tr><td colspan="2"><strong>Components (src/components/)</strong></td></tr>
+    <tr><td>&nbsp;&nbsp;Header.tsx</td><td>The top navigation bar with logo and status.</td></tr>
+    <tr><td>&nbsp;&nbsp;UploadZone.tsx</td><td>The drag-and-drop file upload area.</td></tr>
+    <tr><td>&nbsp;&nbsp;SamplePicker.tsx</td><td>The 4 sample invoice selection cards.</td></tr>
+    <tr><td>&nbsp;&nbsp;DocumentViewer.tsx</td><td>Shows the original document with zoom, plus renders sample invoices as realistic GST invoices.</td></tr>
+    <tr><td>&nbsp;&nbsp;DataEditor.tsx</td><td>The editable form with 30+ extracted fields.</td></tr>
+    <tr><td>&nbsp;&nbsp;LineItemsEditor.tsx</td><td>The editable line items table with auto-calculating totals.</td></tr>
+    <tr><td>&nbsp;&nbsp;DetailSectionsPanel.tsx</td><td>The expandable sections for industrial invoice details.</td></tr>
+    <tr><td>&nbsp;&nbsp;ExportToolbar.tsx</td><td>The export buttons and overall confidence display.</td></tr>
+    <tr><td>&nbsp;&nbsp;ConfidenceBadge.tsx</td><td>The color-coded confidence indicator (green/amber/red).</td></tr>
+    <tr><td colspan="2"><strong>Utilities (src/utils/)</strong></td></tr>
+    <tr><td>&nbsp;&nbsp;ocrEngine.ts</td><td>The scanning engine &mdash; reads text from images and PDFs using Tesseract.js and PDF.js.</td></tr>
+    <tr><td>&nbsp;&nbsp;invoiceParser.ts</td><td>The information extractor &mdash; finds specific fields from raw text using pattern matching.</td></tr>
+    <tr><td>&nbsp;&nbsp;exporter.ts</td><td>The export engine &mdash; creates JSON, CSV, and Excel files.</td></tr>
+    <tr><td colspan="2"><strong>Data &amp; Types</strong></td></tr>
+    <tr><td>&nbsp;&nbsp;src/data/sampleInvoices.ts</td><td>The 4 ready-made Indian GST sample invoices.</td></tr>
+    <tr><td>&nbsp;&nbsp;src/types/invoice.ts</td><td>Definitions for all the data structures used in the app.</td></tr>
+    <tr><td colspan="2"><strong>Optional Python Backend (backend/)</strong></td></tr>
+    <tr><td>&nbsp;&nbsp;app/main.py</td><td>The Python server with REST endpoints.</td></tr>
+    <tr><td>&nbsp;&nbsp;app/ocr_engine.py</td><td>Server-side scanning using pytesseract and EasyOCR.</td></tr>
+    <tr><td>&nbsp;&nbsp;app/extractor.py</td><td>Server-side information extraction (mirrors the browser version).</td></tr>
+    <tr><td>&nbsp;&nbsp;requirements.txt</td><td>List of Python packages needed.</td></tr>
+  </table>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 10</div>
+</div>
+
+<!-- ============ PAGE 11: Q&A ============ -->
+<div class="page">
+  <h2><span class="section-num">10</span> Questions &amp; Answers</h2>
+
+  <div class="qa">
+    <div class="q">Q1: What is this project and what problem does it solve?</div>
+    <div class="a">
+      SmartInvoice AI is a scanning-based invoice processing tool that automatically extracts data from Indian GST invoices.
+      The problem is that companies receive thousands of invoices daily, and the accounts team has to manually type in every
+      detail &mdash; vendor name, GST number, amounts, tax breakdown, line items. This is slow and error-prone. Our tool does
+      all of this automatically: upload a document, the app scans it, extracts the data, and lets you export it in one click.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q2: What technologies did you use and why?</div>
+    <div class="a">
+      For the user interface: React with TypeScript for safety, Vite for fast builds, and Tailwind CSS for responsive styling.
+      For scanning: Tesseract.js runs right in the browser &mdash; no server needed. PDF.js renders PDF pages for scanning.
+      SheetJS handles Excel export. There's an optional Python backend using FastAPI for server-side processing.
+      I chose browser-based scanning because it means zero infrastructure cost, complete privacy (documents never leave
+      your device), and instant processing with no network delay.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q3: How does the scanning pipeline work?</div>
+    <div class="a">
+      For PDFs: each page is rendered onto a canvas at double resolution (for accuracy), then the scanning engine reads
+      text from each canvas page. For images: the image is drawn onto a canvas (limited to 2000 pixels to save memory),
+      then scanned. All text from all pages is combined and passed to the information extractor. Progress is shown in
+      real-time on screen across 4 stages: Loading, Scanning, Extracting, and Validating.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q4: How do you get structured fields from raw scanned text?</div>
+    <div class="a">
+      A pattern-matching system with multiple search patterns per field, tried in priority order. The first match wins,
+      and confidence drops 5% for each pattern that had to be tried before finding a match. For example, the GST number
+      has 4 patterns: "GSTIN: XXX", a bare GST number pattern, "GST No: XXX", and so on. Missing values are also
+      auto-calculated &mdash; if total tax is empty, it adds CGST + SGST + IGST automatically.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q5: What is the confidence scoring system?</div>
+    <div class="a">
+      Every extracted field gets a confidence score from 0 to 100%. The first pattern match gives about 95% confidence.
+      Each failed pattern drops it by 5%. Scores of 90% and above show green, 75-89% show amber, and below 75% show red.
+      Low-confidence fields display a "please verify" warning. The overall document confidence is the average of all
+      field scores, displayed prominently in the export toolbar.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q6: How is this specifically tailored for Indian invoices?</div>
+    <div class="a">
+      The app handles Indian-specific fields: GSTIN (15-character tax ID with state code), PAN (10-character), CIN,
+      CGST/SGST (for intra-state sales) vs IGST (for inter-state sales), HSN codes for goods classification, Place of
+      Supply with state code, DD/MM/YYYY date format, the &#8377; symbol for amounts, Indian units (NOS, CUM, KG, SET),
+      and amounts written in words. The 4 sample invoices feature real Indian companies: Reliance, Tata Motors, Flipkart,
+      and UltraTech Cement.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q7: How does the export system work?</div>
+    <div class="a">
+      Three formats: JSON (full structured data for programmers), CSV (flat spreadsheet with field-value pairs, line items,
+      and detail sections), and Excel (multi-sheet workbook with a Summary sheet for all fields, a Line Items sheet, and
+      separate sheets for each detail section). Column widths are auto-sized for readability. There's also a Copy JSON
+      button for instant clipboard copying.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q8: What challenges did you face and how did you solve them?</div>
+    <div class="a">
+      1) Low scanning accuracy on poor-quality scans &mdash; solved by rendering at double resolution.
+      2) Indian date format ambiguity (DD/MM vs MM/DD) &mdash; solved with validation (day must be 31 or less, month 12 or less).
+      3) Distinguishing CGST/SGST from IGST &mdash; the extractor tries all three and shows whichever is present.
+      4) Multi-page PDFs &mdash; each page is scanned separately and text is combined.
+      5) Large images causing memory issues &mdash; canvas is limited to 2000 pixels on the longest side.
+    </div>
+  </div>
+
+  <div class="qa">
+    <div class="q">Q9: How would you scale this for production?</div>
+    <div class="a">
+      1) Move scanning to the Python server with EasyOCR or cloud vision AI for higher accuracy.
+      2) Add user accounts and save extraction history using a database.
+      3) Support batch processing for multiple invoices at once.
+      4) Add GST number validation against government APIs for supplier verification.
+      5) Integrate with accounting software like Tally or Zoho Books.
+      6) Auto-generate e-way bills.
+      7) Prepare data for GST return filing (GSTR-1, GSTR-3B).
+    </div>
+  </div>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 11</div>
+</div>
+
+<!-- ============ PAGE 12: SUMMARY ============ -->
+<div class="page">
+  <h2><span class="section-num">11</span> Summary &mdash; Everything At A Glance</h2>
+
+  <div class="highlight-box">
+    <div class="hb-title">The Project In One Sentence</div>
+    <p>
+      SmartInvoice AI is a browser-based scanning tool that automatically reads 30+ fields from Indian GST invoices &mdash;
+      with no server required, confidence scores for every field, and one-click export to JSON, CSV, or Excel.
+    </p>
+  </div>
+
+  <h3>Key Highlights</h3>
+  <ul>
+    <li><strong>Browser-based scanning</strong> &mdash; runs entirely in your browser, no server needed, no API costs, full privacy</li>
+    <li><strong>Multi-page PDF support</strong> &mdash; each page scanned separately at double resolution for accuracy</li>
+    <li><strong>30+ Indian GST fields</strong> &mdash; GST number, PAN, CIN, tax breakdown, HSN codes, and more</li>
+    <li><strong>Confidence scoring</strong> &mdash; every field has a score with color-coded visual indicators</li>
+    <li><strong>Smart auto-calculations</strong> &mdash; missing values are computed automatically</li>
+    <li><strong>3 detail sections</strong> &mdash; for industrial invoices with transport and production data</li>
+    <li><strong>3 export formats</strong> &mdash; JSON, CSV, and multi-sheet Excel</li>
+    <li><strong>Fully editable</strong> &mdash; every field can be modified, line totals recalculate automatically</li>
+    <li><strong>4 sample invoices</strong> &mdash; covering intra-state, inter-state, and industrial scenarios</li>
+    <li><strong>Responsive design</strong> &mdash; works on mobile, tablet, and desktop</li>
+    <li><strong>Optional Python backend</strong> &mdash; for server-side processing when needed</li>
+    <li><strong>Type-safe code</strong> &mdash; built with TypeScript throughout for reliability</li>
+  </ul>
+
+  <h3>Strengths Of The Project</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">Privacy First</div>
+      <div class="card-desc">Your document never leaves your computer. All processing happens right in the browser.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Zero Cost</div>
+      <div class="card-desc">No cloud APIs, no server bills. Built entirely with free, open-source tools.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Indian GST Ready</div>
+      <div class="card-desc">GST numbers, PAN, HSN codes, CGST/SGST/IGST &mdash; designed specifically for Indian invoices.</div>
+    </div>
+    <div class="card">
+      <div class="card-title">Production Quality</div>
+      <div class="card-desc">Type-safe code, proper error handling, responsive design &mdash; built to production standards.</div>
+    </div>
+  </div>
+
+  <h3>Skills Demonstrated</h3>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>User interface design and component architecture</li>
+        <li>Type-safe coding with TypeScript</li>
+        <li>Scanning engine integration (Tesseract.js)</li>
+        <li>PDF rendering and processing (PDF.js)</li>
+        <li>Pattern matching and text analysis</li>
+      </ul>
+    </div>
+    <div>
+      <ul>
+        <li>State management with unidirectional data flow</li>
+        <li>Responsive design with Tailwind CSS</li>
+        <li>Multi-format data export (JSON, CSV, Excel)</li>
+        <li>REST API design (FastAPI, Python)</li>
+        <li>Indian GST domain knowledge</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="summary-box">
+    <div class="title">SmartInvoice AI</div>
+    <div class="sub">Intelligent Invoice &amp; Receipt Processing for Indian GST</div>
+    <div class="tech">React &middot; TypeScript &middot; Tesseract.js &middot; PDF.js &middot; Tailwind CSS &middot; FastAPI</div>
+  </div>
+
+  <div class="footer">SmartInvoice AI &mdash; Plain English Project Guide</div>
+  <div class="page-num">Page 12</div>
+</div>
+
+</body>
+</html>
