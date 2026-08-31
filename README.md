@@ -82,17 +82,21 @@ uvicorn app.main:app --reload --port 8000
 
 ## Deployment
 
+### Vercel (recommended)
+
+This app is configured to work cleanly on Vercel.
+
+1. Push the repository to GitHub.
+2. Sign in to Vercel and import the repository.
+3. Keep the default Vite settings:
+   - Framework Preset: Vite
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+4. Deploy.
+
 ### GitHub Pages
 
-This project is prepared for GitHub Pages deployment using the repository name as the base path in `vite.config.ts`.
-
-1. Push the repo to GitHub.
-2. Open the GitHub repository settings.
-3. Navigate to Pages.
-4. Set the source to GitHub Actions or deploy the static output from the `dist/` folder.
-5. Use the generated Pages URL for the live app.
-
-### Manual static deployment
+GitHub Pages is also possible, but the app is primarily set up for Vercel deployment.
 
 ```bash
 npm run build
